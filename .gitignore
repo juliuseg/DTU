@@ -2,6 +2,6 @@
 !/.gitignore
 /*
 /*/
-!/ML/Project1
+!/ML/Project1/**
 !/Fysik/Slides/MEGA22feb.pdf
 !/algo/mergeSort
