@@ -3,6 +3,7 @@ from scipy.linalg import svd
 import numpy as np
 import xlrd
 
+# LOLLLL
 
 filename = 'PowerPlant.xls'
 doc = xlrd.open_workbook(filename).sheet_by_index(0)
