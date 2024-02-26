@@ -1,4 +1,5 @@
 /Gamle fag/
-/Fysik/
-!/Fysik/Slides/Text.txt
+/Fysik/**
+!/Fysik/Slides
+!/Fysik/Slides/Test.txt
 /ML/02450Toolbox_Python
