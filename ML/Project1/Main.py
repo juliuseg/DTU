@@ -18,7 +18,7 @@ for i, col_id in enumerate(range(0, 5)):
 
 
 
-N = 9567
+N, M = X.shape
 
 
 Y = X - np.ones((N, 1)) * X.mean(axis=0)
@@ -31,9 +31,23 @@ rho = (S * S) / (S * S).sum()
 
 df = pd.DataFrame(X, columns=attributeNames)
 
-# Calculate the labeled correlation matrix
 
 
+def PCAexplanations():
+    pcs = [0, 1, 2]
+    legendStrs = ["PC" + str(e + 1) for e in pcs]
+    c = ["r", "g", "b"]
+    bw = 0.2
+    r = np.arange(1, M + 1)
+    for i in pcs:
+        plt.bar(r + i * bw, V[:, i], width=bw)
+    plt.xticks(r + bw, attributeNames)
+    plt.xlabel("Attributes")
+    plt.ylabel("Component coefficients")
+    plt.legend(legendStrs)
+    plt.grid()
+    plt.title("Powerplant: PCA Component Coefficients")
+    plt.show()
 
 def describeData():
     print("\nData describtion")
@@ -166,10 +180,13 @@ def scatterMatrixPower(data, figsize=(8, 8)):
     plt.tight_layout(rect=[0, 0, 0.9, 1])  
     plt.show()
 
+
+
 #describeData()
 #scatter()
 #boxplot(X)
 #scatterMatrix(X)
 #scatterMatrixPower(X)
 #explained()
+PCAexplanations()
 
