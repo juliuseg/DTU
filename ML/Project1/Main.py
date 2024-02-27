@@ -166,9 +166,10 @@ def scatterMatrixPower(data, figsize=(8, 8)):
     plt.tight_layout(rect=[0, 0, 0.9, 1])  
     plt.show()
 
-#explained()
+#describeData()
 #scatter()
 #boxplot(X)
 #scatterMatrix(X)
 #scatterMatrixPower(X)
-describeData()
+#explained()
+
