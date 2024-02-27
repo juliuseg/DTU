@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 from scipy.linalg import svd
 import numpy as np
 import xlrd
-
-# LOLLLL
+import pandas as pd
 
 filename = 'PowerPlant.xls'
 doc = xlrd.open_workbook(filename).sheet_by_index(0)
@@ -30,11 +29,32 @@ rho = (S * S) / (S * S).sum()
 
 
 
+df = pd.DataFrame(X, columns=attributeNames)
+
+# Calculate the labeled correlation matrix
+
+
+
+def describeData():
+    print("\nData describtion")
+    s = df.describe()
+    print(s)
+
+    print("\nCorralation Matrix\n")
+    correlation_matrix_labeled = df.corr()
+    print(correlation_matrix_labeled)
+
+    
+
+
 
 def explained():
     threshold1 = 0.90
     threshold2 = 0.95
     # # Plot variance explained
+    print(rho)
+    print(np.cumsum(rho))
+
     plt.figure()
     plt.plot(range(1, len(rho) + 1), rho, "x-")
     plt.plot(range(1, len(rho) + 1), np.cumsum(rho), "o-")
@@ -150,4 +170,5 @@ def scatterMatrixPower(data, figsize=(8, 8)):
 #scatter()
 #boxplot(X)
 #scatterMatrix(X)
-scatterMatrixPower(X)
+#scatterMatrixPower(X)
+describeData()
