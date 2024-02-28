@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 from scipy.linalg import svd
 import numpy as np
 import xlrd
@@ -34,7 +35,7 @@ df = pd.DataFrame(X, columns=attributeNames)
 
 
 def PCAexplanations():
-    pcs = [0, 1, 2]
+    pcs = [0, 1]
     legendStrs = ["PC" + str(e + 1) for e in pcs]
     c = ["r", "g", "b"]
     bw = 0.2
@@ -48,6 +49,37 @@ def PCAexplanations():
     plt.grid()
     plt.title("Powerplant: PCA Component Coefficients")
     plt.show()
+
+
+def dataOnPCs():
+    # PCA by computing SVD of Y
+    U, S, Vh = svd(Y, full_matrices=False)
+    # scipy.linalg.svd returns "Vh", which is the Hermitian (transpose)
+    # of the vector V. So, for us to obtain the correct V, we transpose:
+    V = Vh.T
+
+    # Project the centered data onto principal component space
+    Z = Y @ V
+
+    # Indices of the principal components to be plotted
+    i = 0
+    j = 1
+
+    # Plot PCA of the data
+    f = plt.figure()
+    plt.title("NanoNose data: PCA")
+
+    for c in range(1,2):
+        # #select indices belonging to class c:
+        plt.plot(Z[:, i], Z[:, j], "o", alpha=0.5)
+
+    plt.legend(attributeNames)
+    plt.xlabel("PC{0}".format(i + 1))
+    plt.ylabel("PC{0}".format(j + 1))
+
+    # Output result to screen
+    plt.show()
+
 
 def describeData():
     print("\nData describtion")
@@ -189,4 +221,5 @@ def scatterMatrixPower(data, figsize=(8, 8)):
 #scatterMatrixPower(X)
 #explained()
 PCAexplanations()
+#dataOnPCs()
 
