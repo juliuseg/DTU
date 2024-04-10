@@ -1,17 +1,10 @@
 import numpy as np
-from scipy.io import loadmat
 from sklearn.model_selection import KFold
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
+from LoadData import *
 
-# # Load data
-filename = "PowerPlant.mat"
-mat_data = loadmat(filename)
-X = mat_data["X"]
-y = mat_data["y"].squeeze()
-
-# Assuming X, y are your data and target variables
 
 # Parameters
 neurons_range = range(1, 5)  # Range of neuron counts to explore
