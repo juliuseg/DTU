@@ -1,5 +1,10 @@
-import matplotlib.pyplot as plt
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import KFold
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
+from scipy.linalg import svd
+import matplotlib.pyplot as plt
 from scipy.linalg import svd
 import numpy as np
 import xlrd
@@ -190,6 +195,106 @@ def scatterMatrixPower(data, figsize=(8, 8)):
     plt.tight_layout(rect=[0, 0, 0.9, 1])  
     plt.show()
 
+def regression(X):
+                
+    # Separate features and target variable
+    y = X[:, -1]  # Target variable is the last column
+    X = X[:, :-1]  # Features are all columns except the last
+
+    # Standardize features (assuming no offset column needed as we're standardizing)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # Set up cross-validation
+    K = 5
+    CV = KFold(n_splits=K, shuffle=True)
+
+    lambdas = np.power(10.0, range(-5, 9))
+    train_errors = np.zeros((len(lambdas), K))
+    test_errors = np.zeros((len(lambdas), K))
+    coefficients = np.zeros((len(lambdas), X.shape[1]))
+
+    k = 0
+    for train_index, test_index in CV.split(X_scaled, y):
+        X_train, y_train = X_scaled[train_index], y[train_index]
+        X_test, y_test = X_scaled[test_index], y[test_index]
+
+        for i, lambda_ in enumerate(lambdas):
+            ridge = Ridge(alpha=lambda_)
+            ridge.fit(X_train, y_train)
+            y_train_pred = ridge.predict(X_train)
+            y_test_pred = ridge.predict(X_test)
+            train_errors[i, k] = mean_squared_error(y_train, y_train_pred)
+            test_errors[i, k] = mean_squared_error(y_test, y_test_pred)
+            coefficients[i, :] = ridge.coef_
+
+        k += 1
+
+    # Plot coefficient paths
+    plt.figure(figsize=(12, 8))
+    plt.subplot(1, 2, 1)
+    for i in range(X.shape[1]):
+        plt.semilogx(lambdas, coefficients[:, i])
+    plt.xlabel('Lambda')
+    plt.ylabel('Coefficients')
+    plt.title('Paths of Ridge Coefficients')
+
+    # Plot mean squared error
+    plt.subplot(1, 2, 2)
+    plt.semilogx(lambdas, train_errors.mean(axis=1), label='Train MSE')
+    plt.semilogx(lambdas, test_errors.mean(axis=1), label='Test MSE')
+    plt.xlabel('Lambda')
+    plt.ylabel('MSE')
+    plt.legend()
+    plt.title('Train vs Test MSE')
+
+    plt.tight_layout()
+    plt.show()
+
+def computefolds():
+    # Define number of folds for cross-validation
+    num_folds = 10
+    kf = KFold(n_splits=num_folds)
+
+    # Initialize lists to store lambda values and errors for Ridge regression
+    lambda_values = []
+    ridge_errors = []
+
+    # Perform k-fold cross-validation
+    fold_index = 1
+    for train_index, test_index in kf.split(X):
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = Y[train_index], Y[test_index]
+        
+        # Fit Ridge regression model with lambda (alpha) set to 1
+        ridge_model = Ridge(alpha=00000.0)
+        ridge_model.fit(X_train, y_train)
+        
+        # Predict on test data
+        y_pred = ridge_model.predict(X_test)
+        
+        # Compute mean squared error
+        mse = mean_squared_error(y_test, y_pred)
+        
+        # Store lambda value (lambda is not used in Ridge regression, but we'll store it for consistency)
+        lambda_values.append(10000)
+        
+        # Store error
+        ridge_errors.append(mse)
+        
+        print(f"Fold {fold_index}: Lambda = 10000, Error = {mse:.10f}")
+        fold_index += 1
+
+    # Compute baseline error (mean squared error when predicting mean of target variable)
+    baseline_error = mean_squared_error(Y, np.mean(Y, axis=0).reshape(1, -1).repeat(len(Y), axis=0))
+    print(f"Baseline Error: {baseline_error:.2f}")
+
+    return lambda_values, ridge_errors
+
+lambda_values, ridge_errors = computefolds()
+
+
+#regression(X)
 
 
 #describeData()
@@ -200,4 +305,4 @@ def scatterMatrixPower(data, figsize=(8, 8)):
 #explained()
 #PCAexplanations()
 #dataOnPCs()
-QQplots()
+#QQplots()
