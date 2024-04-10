@@ -1,3 +1,5 @@
+# Code written in collaboration with Chat-gpt4
+
 import sklearn.linear_model as lm
 from matplotlib.pylab import (
     figure,
@@ -20,7 +22,7 @@ from sklearn.model_selection import KFold
 from LoadData import *
 
 K_outer = 10
-outer_cv = KFold(n_splits=K_outer, shuffle=True)
+outer_cv = KFold(n_splits=K_outer, shuffle=True, random_state=42)
 
 baseline_errors = []
 
@@ -43,3 +45,4 @@ for outer_train_index, outer_test_index in outer_cv.split(X):
 # Calculate and print the average generalization error across all folds
 average_baseline_error = np.mean(baseline_errors)
 print("Average Generalization Error (Baseline): {:.4f}".format(average_baseline_error))
+print("Test MSE per fold:", baseline_errors)

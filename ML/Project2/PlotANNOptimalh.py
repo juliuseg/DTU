@@ -1,3 +1,5 @@
+# Code written in collaboration with Chat-gpt4
+
 import numpy as np
 from scipy.io import loadmat
 from sklearn.model_selection import KFold
@@ -12,7 +14,7 @@ K = 10
 CV = KFold(K, shuffle=True)
 
 # Range of neurons to explore in the hidden layer
-neurons_range = range(1, 21)  # Exploring 1 to 20 neurons
+neurons_range = range(1, 5)  # Exploring 1 to 20 neurons
 
 # Variables to track errors for each model configuration
 train_errors = np.empty((K, len(neurons_range)))
