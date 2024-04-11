@@ -21,44 +21,48 @@ b = classificationRegressionErrors
 c = classificationANNErrors
 
 # Pairwise T-tests
-# {A} model vs {B} model
 t_stat_ab, p_value_ab = stats.ttest_rel(a, b)
-# {A} model vs {C} model
 t_stat_ac, p_value_ac = stats.ttest_rel(a, c)
-# {B} model vs {C} model
 t_stat_bc, p_value_bc = stats.ttest_rel(b, c)
 
 # Confidence Intervals for the differences in means
-# Confidence level
 alpha = 0.05
-# Degrees of freedom
 df = len(a) - 1
+confidence_level = 1 - alpha
 
-# {A} model vs {B} model
-ci_low_ab, ci_high_ab = stats.t.interval(alpha, df, loc=np.mean(a-b), scale=stats.sem(a-b))
-# {A} model vs {C} model
-ci_low_ac, ci_high_ac = stats.t.interval(alpha, df, loc=np.mean(a-c), scale=stats.sem(a-c))
-# {B} model vs {C} model
-ci_low_bc, ci_high_bc = stats.t.interval(alpha, df, loc=np.mean(b-c), scale=stats.sem(b-c))
+# Calculate standard error of the mean difference for scale
+sem_ab = stats.sem(a - b)
+sem_ac = stats.sem(a - c)
+sem_bc = stats.sem(b - c)
+
+ci_low_ab, ci_high_ab = stats.t.interval(confidence_level, df, loc=np.mean(a - b), scale=sem_ab)
+ci_low_ac, ci_high_ac = stats.t.interval(confidence_level, df, loc=np.mean(a - c), scale=sem_ac)
+ci_low_bc, ci_high_bc = stats.t.interval(confidence_level, df, loc=np.mean(b - c), scale=sem_bc)
 
 # Print the results
-print(f"{A} model vs {B} model: p-value = {p_value_ab}, CI = ({ci_low_ab}, {ci_high_ab})")
-print(f"{A} model vs {C} model: p-value = {p_value_ac}, CI = ({ci_low_ac}, {ci_high_ac})")
-print(f"{B} model vs {C} model: p-value = {p_value_bc}, CI = ({ci_low_bc}, {ci_high_bc})")
+print(f"{A} model vs {B} model: p-value = {p_value_ab},\n CI = ({ci_low_ab}, {ci_high_ab})")
+print(f"{A} model vs {C} model: p-value = {p_value_ac},\n CI = ({ci_low_ac}, {ci_high_ac})")
+print(f"{B} model vs {C} model: p-value = {p_value_bc},\n CI = ({ci_low_bc}, {ci_high_bc})")
+
+print("\n")
 
 # Null hypothesis interpretation
-if p_value_ab < 0.05:
+if p_value_ab < alpha:
     print(f"Reject H0 for {A} model vs {B} model: The difference in performance is statistically significant.")
 else:
     print(f"Fail to reject H0 for {A} model vs {B} model: No significant difference in performance.")
 
-if p_value_ac < 0.05:
+print("")
+
+if p_value_ac < alpha:
     print(f"Reject H0 for {A} model vs {C} model: The difference in performance is statistically significant.")
 else:
     print(f"Fail to reject H0 for {A} model vs {C} model: No significant difference in performance.")
 
-if p_value_bc < 0.05:
+print("")
+
+
+if p_value_bc < alpha:
     print(f"Reject H0 for {B} model vs {C} model: The difference in performance is statistically significant.")
 else:
     print(f"Fail to reject H0 for {B} model vs {C} model: No significant difference in performance.")
-
