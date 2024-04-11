@@ -1,4 +1,5 @@
 # Code taken from exercise 8.1.1 and modified to fit our data
+# Code written in collaboration with Chat-gpt3.5 and Aniq, S224465
 
 import importlib_resources
 import numpy as np

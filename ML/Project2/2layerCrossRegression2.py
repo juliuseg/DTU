@@ -1,3 +1,6 @@
+# Code written by Julius Gronager, s204427
+# Code written in collaboration with Chat-gpt4
+
 from sklearn.model_selection import KFold
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error

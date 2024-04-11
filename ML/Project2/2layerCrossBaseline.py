@@ -1,4 +1,5 @@
-# Code written in collaboration with Chat-gpt4
+# Code written by Christoffer, s224492
+# Code written in collaboration with Chat-gpt3.5
 
 import sklearn.linear_model as lm
 from matplotlib.pylab import (

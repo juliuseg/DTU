@@ -1,3 +1,4 @@
+# Code written by Julius Gronager, s204427
 # Code written in collaboration with Chat-gpt4
 
 import numpy as np
